@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdebug
+spec:
+  selector:
+    app: netdebug
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

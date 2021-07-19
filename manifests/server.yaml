@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netserver
+  labels:
+    app: netdebug
+    component: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdebug
+      component: server
+  template:
+    metadata:
+      labels:
+        app: netdebug
+        component: server
+    spec:
+      containers:
+      - name: server
+        image: gke-connection-reset-repro
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

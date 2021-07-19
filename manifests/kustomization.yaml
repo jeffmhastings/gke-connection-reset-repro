@@ -1,0 +1,9 @@
+resources:
+- service.yaml
+- server.yaml
+- co-located-client.yaml
+- remote-client.yaml
+
+images:
+- name: gke-connection-reset-repro
+  newName: gcr.io/project-name/gke-connection-reset-repro

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: co-located-client
+  labels:
+    app: netdebug
+    component: co-located-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdebug
+      component: co-located-client
+  template:
+    metadata:
+      labels:
+        app: netdebug
+        component: co-located-client
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: component
+                operator: In
+                values:
+                - server
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: client
+        image: gke-connection-reset-repro
+        imagePullPolicy: Always
+        command:
+        - /gke-connection-reset-repro
+        - client
+        - --host=netdebug
+        - --port=8080
+        - --period=5s

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: remote-client
+  labels:
+    app: netdebug
+    component: remote-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdebug
+      component: remote-client
+  template:
+    metadata:
+      labels:
+        app: netdebug
+        component: remote-client
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: component
+                operator: In
+                values:
+                - server
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: client
+        image: gke-connection-reset-repro
+        imagePullPolicy: Always
+        command:
+        - /gke-connection-reset-repro
+        - client
+        - --host=netdebug
+        - --port=8080
+        - --period=5s
