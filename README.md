@@ -58,8 +58,8 @@ reference the image in your project's GCR repository by replacing
 
 ```yaml
 images:
-- name: netdebug
-  newName: gcr.io/project-name/netdebug
+- name: gke-connecction-reset-repro
+  newName: gcr.io/project-name/gke-connecction-reset-repro
 ```
 
 The deploy the application with `kubectl`
