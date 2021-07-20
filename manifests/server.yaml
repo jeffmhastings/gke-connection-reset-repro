@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: gke-connection-reset-repro
+        image: jeffmhastings/gke-connection-reset-repro
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

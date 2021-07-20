@@ -34,10 +34,10 @@ Deploy a standard GKE cluster with at least two nodes and with network policy
 and intranode visibility enabled.
 
 ```bash
-gcloud container clusters create netdebug-cluster \
+gcloud container clusters create gke-connection-reset-repro \
     --num-nodes=2 \
-    --enable-network-policy \
-    --enable-intra-node-visibility
+    --enable-intra-node-visibility \
+    --enable-network-policy
 ```
 
 ## 2. Build and publish the container (Optional)

@@ -29,7 +29,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: client
-        image: gke-connection-reset-repro
+        image: jeffmhastings/gke-connection-reset-repro
         imagePullPolicy: Always
         command:
         - /gke-connection-reset-repro
