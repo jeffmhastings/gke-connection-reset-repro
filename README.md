@@ -21,14 +21,14 @@ reset errors being logged periodically. The client running on the other node
 resets, and you should not see any of these errors in it's logs.
 
 
-## Assumptions
+## Running the application
 
-This README is written with the assumption that you have the command line tool
-`gcloud` installed and configured to work with your GCP account. It also
-assumes that you have a docker agent configured that can authenticate with
-gcr.io for your project. The GCP cloud shell can be used for this example.
+This is written with the assumption that you have the command line tool
+`gcloud` installed and configured to work with your GCP account. You will need
+to create a GKE cluster which consumes resources in GCP and will result in
+billing.
 
-## 1. Deploy GKE
+### 1. Create GKE cluster
 
 Deploy a standard GKE cluster with at least two nodes and with network policy
 and intranode visibility enabled.
@@ -40,38 +40,15 @@ gcloud container clusters create gke-connection-reset-repro \
     --enable-network-policy
 ```
 
-## 2. Build and publish the container (Optional)
-
-If you wish to build the container image and publish it to your own registry,
-then you can do so.
-
-Build the docker image and publish to your registry. Replace the value
-`your-image-repository` with the repository you would like to use for
-publishing the image.
-
-```bash
-docker build --tag your-image-repository .
-docker push your-image-repository
-```
-
-Update [manifests/kustomization.yaml](./manifests/kustomization.yaml) to
-uncomment the `images` section, and set `newName` to your image repository.
-
-```yaml
-images:
-- name: jeffmhastings/gke-connecction-reset-repro
-  newName: your-image-repository
-```
-
-## 3. Deploy the application to GKE
+### 2. Deploy the application to GKE
 
 Deploy the application with `kubectl`
 
 ```bash
-kubectl apply -k manifests
+kubectl apply -k github.com/jeffmhastings/gke-connection-reset-repro/manifests
 ```
 
-## 4. Monitor the application for errors
+## 3. Monitor the application for errors
 
 Check the logs for the server
 
@@ -103,3 +80,33 @@ than a few minutes.
 
 After that, the client will reconnect and continue making requests, and continue
 to be affected by unexpected connection reset errors.
+
+
+## Build and publish the container (Optional)
+
+If you wish to build the container image and publish it to your own registry,
+then you can do so.
+
+Build the docker image and publish to your registry. Replace the value
+`your-image-repository` with the repository you would like to use for
+publishing the image.
+
+```bash
+docker build --tag your-image-repository .
+docker push your-image-repository
+```
+
+Update [manifests/kustomization.yaml](./manifests/kustomization.yaml) to
+uncomment the `images` section, and set `newName` to your image repository.
+
+```yaml
+images:
+- name: jeffmhastings/gke-connecction-reset-repro
+  newName: your-image-repository
+```
+
+Then to deploy the application, run
+
+```bash
+kubectl apply -k manifests
+```
