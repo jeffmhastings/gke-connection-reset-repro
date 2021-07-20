@@ -101,7 +101,7 @@ uncomment the `images` section, and set `newName` to your image repository.
 
 ```yaml
 images:
-- name: jeffmhastings/gke-connecction-reset-repro
+- name: jeffmhastings/gke-connection-reset-repro
   newName: your-image-repository
 ```
 
