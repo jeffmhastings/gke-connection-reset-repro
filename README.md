@@ -40,29 +40,32 @@ gcloud container clusters create netdebug-cluster \
     --enable-intra-node-visibility
 ```
 
-## 2. Build and publish the container
+## 2. Build and publish the container (Optional)
 
-Build the docker image and publish to your gcr.io registry. Replace the value
-`project-name` with your GCP project name.
+If you wish to build the container image and publish it to your own registry,
+then you can do so.
+
+Build the docker image and publish to your registry. Replace the value
+`your-image-repository` with the repository you would like to use for
+publishing the image.
 
 ```bash
-docker build --tag gcr.io/project-name/netdebug .
-docker push gcr.io/project-name/netdebug
+docker build --tag your-image-repository .
+docker push your-image-repository
+```
+
+Update [manifests/kustomization.yaml](./manifests/kustomization.yaml) to
+uncomment the `images` section, and set `newName` to your image repository.
+
+```yaml
+images:
+- name: jeffmhastings/gke-connecction-reset-repro
+  newName: your-image-repository
 ```
 
 ## 3. Deploy the application to GKE
 
-First update [manifests/kustomization.yaml](./manifests/kustomization.yaml) to
-reference the image in your project's GCR repository by replacing
-`project-name` with your project name.
-
-```yaml
-images:
-- name: gke-connecction-reset-repro
-  newName: gcr.io/project-name/gke-connecction-reset-repro
-```
-
-The deploy the application with `kubectl`
+Deploy the application with `kubectl`
 
 ```bash
 kubectl apply -k manifests

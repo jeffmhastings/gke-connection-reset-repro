@@ -4,6 +4,7 @@ resources:
 - co-located-client.yaml
 - remote-client.yaml
 
-images:
-- name: gke-connection-reset-repro
-  newName: gcr.io/project-name/gke-connection-reset-repro
+# Update the image repository if building your own
+#images:
+#- name: jeffmhastings/gke-connection-reset-repro
+#  newName:
